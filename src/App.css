@@ -197,8 +197,17 @@
 }
 
 .back-and-next-container .next,
-.back-and-next-div .back {
+.back-and-next-container .back {
   cursor: pointer;
+  background-color: #007c16;
+  color: #fff;
+  padding: 10px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .back-and-next-container .indicator {

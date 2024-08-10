@@ -15,6 +15,7 @@ const Popup = ({ setPopup }) => {
   // slides array of objects
   const slides = [
     {
+      id: 0,
       name: "Upload and View Excel Files In React",
       description:
         "Learn how to effortlessly upload and view Excel files in your React applications with this step-by-step tutorial.",
@@ -23,6 +24,7 @@ const Popup = ({ setPopup }) => {
       url: "https://www.youtube.com/watch?v=yXanzI91Ajc",
     },
     {
+      id: 1,
       name: "Starry Nightsky",
       description:
         "A mesmerizing view of the starry nightsky, capturing the beauty and vastness of the universe.",
@@ -31,6 +33,7 @@ const Popup = ({ setPopup }) => {
       url: nightsky,
     },
     {
+      id: 2,
       name: "Laptop Workspace",
       description:
         "A modern laptop workspace, ideal for productivity and creativity.",
@@ -39,6 +42,7 @@ const Popup = ({ setPopup }) => {
       url: laptop,
     },
     {
+      id: 3,
       name: "Ocean View",
       description:
         "A tranquil view of the vast ocean, capturing the serenity and beauty of the sea.",
@@ -47,8 +51,10 @@ const Popup = ({ setPopup }) => {
       url: ocean,
     },
     {
+      id: 4,
       name: "Implement User Login through an API call using React and Redux Toolkit",
-      description: "In this tutorial, learn how to implement user login through an API call using React and Redux Toolkit.",
+      description:
+        "In this tutorial, learn how to implement user login through an API call using React and Redux Toolkit.",
       mediaType: "video",
       duration: 60,
       url: "https://www.youtube.com/watch?v=SnwCazCXBq4&t=63s",
@@ -58,12 +64,12 @@ const Popup = ({ setPopup }) => {
   // states
   const [currentIndex, setCurrentIndex] = useState(0);
   const [duration, setDuration] = useState(slides[0].duration);
-  const [secondsLeft, setSecondsLeft] = useState(duration);
+  const [secondsLeft, setSecondsLeft] = useState(slides[0].duration);
 
   // player ref
   const playerRefs = useRef([]);
 
-  // set seconds left every second by decreasing 1 second
+  // update seconds left every second
   useEffect(() => {
     const interval = setInterval(() => {
       setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
@@ -72,7 +78,7 @@ const Popup = ({ setPopup }) => {
     return () => clearInterval(interval);
   }, [duration]);
 
-  // automatic slide change // update current index // update duration // reset seconds left
+  // reset seconds left and change slide
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => {
@@ -97,7 +103,7 @@ const Popup = ({ setPopup }) => {
     }, duration * 1000 + 1000);
 
     return () => clearInterval(interval);
-  }, [currentIndex, duration, slides]);
+  }, [duration, currentIndex]);
 
   // handle prev
   const handlePrev = () => {
@@ -169,7 +175,7 @@ const Popup = ({ setPopup }) => {
         <div className="current-img-div">
           {slides.map((slide, index) => (
             <div
-              key={index}
+              key={slide.id}
               className="current-image"
               style={{
                 transform: `translateX(-${
@@ -201,45 +207,47 @@ const Popup = ({ setPopup }) => {
 
       <div className="carousel-content">
         {slides.map((slide, index) => (
-          <React.Fragment key={index}>
+          <React.Fragment key={slide.id}>
             {index === currentIndex && (
-              <AnimatePresence>
-                <motion.div
-                  className="main-content"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    duration: 0.5,
-                    delay: 0.3,
-                    ease: "easeInOut",
-                  }}
-                  exit={{ opacity: 0 }}
-                >
-                  <h2 className="name">{slide.name}</h2>
-                  <div className="description">{slide.description}</div>
-                  <div className="progress-container">
-                    <div
-                      key={currentIndex}
-                      className="progress-bar"
-                      style={{ width: progressBarWidth }}
-                    ></div>
-                  </div>
-                </motion.div>
+              <>
+                <AnimatePresence>
+                  <motion.div
+                    className="main-content"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: 0.3,
+                      ease: "easeInOut",
+                    }}
+                    exit={{ opacity: 0 }}
+                  >
+                    <h2 className="name">{slide.name}</h2>
+                    <div className="description">{slide.description}</div>
+                    <div className="progress-container">
+                      <div
+                        key={slide.id}
+                        className="progress-bar"
+                        style={{ width: progressBarWidth }}
+                      ></div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
 
                 <div className="secondary-content">
                   <div className="back-and-next-container">
-                    <div className="back rounded-circle" onClick={handlePrev}>
+                    <div className="back" onClick={handlePrev}>
                       <Icon icon={chevronLeft} size={42} />
                     </div>
                     <div className="indicator">{`${currentIndex + 1} of ${
                       slides.length
                     }`}</div>
-                    <div className="next rounded-circle" onClick={handleNext}>
+                    <div className="next" onClick={handleNext}>
                       <Icon icon={chevronRight} size={42} />
                     </div>
                   </div>
                 </div>
-              </AnimatePresence>
+              </>
             )}
           </React.Fragment>
         ))}

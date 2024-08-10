@@ -10,9 +10,12 @@ function App() {
       {popup ? (
         <Popup setPopup={setPopup} />
       ) : (
-        <button type="button" onClick={() => setPopup(true)}>
-          Click Me!
-        </button>
+        <>
+          <h1>React Video/Image Slideshow</h1>
+          <button type="button" onClick={() => setPopup(true)}>
+            Click Me To Start Slideshow!
+          </button>
+        </>
       )}
     </>
   );
